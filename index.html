@@ -1,0 +1,925 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Smart Guest List — Event Management</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link rel="stylesheet" href="css/styles.css"/>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/themes/dark.css"/>
+</head>
+<body>
+
+<!-- Particle canvas (landing page background) -->
+<canvas id="particle-canvas"></canvas>
+
+<!-- Background orbs -->
+<div class="orb orb-1"></div>
+<div class="orb orb-2"></div>
+<div class="orb orb-3"></div>
+
+<!-- ═══════════════════════════════════
+     LANDING VIEW
+═══════════════════════════════════ -->
+<div id="landing-view">
+
+  <nav class="lnav">
+    <a class="lnav-logo" href="#">
+      <div class="lnav-logo-mark">◈</div>
+      <span class="lnav-logo-name">Smart <em>Guest</em> List</span>
+    </a>
+    <ul class="lnav-links">
+      <li><a class="lnav-link" data-ls="features" href="#">Features</a></li>
+      <li><a class="lnav-link" data-ls="how" href="#">How it works</a></li>
+      <li><a class="lnav-link" data-ls="cta" href="#">Pricing</a></li>
+    </ul>
+    <div class="lnav-actions">
+      <!-- Anonymous state -->
+      <div class="lnav-anon" id="lnav-anon">
+        <button class="btn-lnav-login" id="nav-login-btn">Login</button>
+        <button class="btn-lnav-cta" id="nav-signup-btn">Get Started</button>
+      </div>
+      <!-- Authenticated state -->
+      <div class="lnav-auth hidden" id="lnav-auth-bar">
+        <div class="lnav-user-pill">
+          <div class="lnav-user-av" id="lnav-user-av">U</div>
+          <span class="lnav-user-name" id="lnav-user-name"></span>
+        </div>
+        <button class="btn-lnav-cta" id="nav-dashboard-btn">Dashboard</button>
+      </div>
+    </div>
+  </nav>
+
+  <section class="hero ls-section" id="ls-home" data-ls="home">
+    <div class="hero-chip"><span class="hero-chip-dot"></span> Real-time guest management</div>
+    <h1 class="hero-title">
+      <span class="hero-title-plain">Your Event,</span><br>
+      <span class="hero-title-grad">Perfectly Managed</span>
+    </h1>
+    <p class="hero-sub">Create events, manage guest lists, and check in attendees in real-time — from any device.</p>
+    <div class="hero-actions">
+      <button class="btn-hero" id="hero-cta-btn">Start for free</button>
+      <button class="btn-hero-outline" id="hero-login-btn">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+        Sign in
+      </button>
+    </div>
+
+    <!-- App preview -->
+    <div class="hero-preview">
+      <div class="hero-preview-frame">
+        <div class="preview-chrome">
+          <div class="preview-dots"><div class="preview-dot"></div><div class="preview-dot"></div><div class="preview-dot"></div></div>
+          <span class="preview-url">smartguestlist.app/dashboard</span>
+          <div style="width:60px"></div>
+        </div>
+        <div class="preview-body">
+          <div class="preview-sidebar-col">
+            <div class="preview-sidebar-label">Events</div>
+            <div class="preview-ev-item on">Launch Party<div class="preview-ev-meta">Mar 22, 2026</div></div>
+            <div class="preview-ev-item">Team Meetup<div class="preview-ev-meta">Apr 5, 2026</div></div>
+            <div class="preview-ev-item">Product Demo<div class="preview-ev-meta">Apr 12, 2026</div></div>
+          </div>
+          <div class="preview-content-col">
+            <div class="preview-stats-row">
+              <div class="preview-stat"><div class="preview-stat-n">24</div><div class="preview-stat-l">Total Guests</div></div>
+              <div class="preview-stat em"><div class="preview-stat-n">18</div><div class="preview-stat-l">Checked In</div></div>
+              <div class="preview-stat"><div class="preview-stat-n">75%</div><div class="preview-stat-l">Check-in Rate</div></div>
+            </div>
+            <div class="preview-guest-row">
+              <div class="preview-av" style="background:linear-gradient(135deg,#7B5CF5,#9D7DFF)">AC</div>
+              <span class="preview-gname">Alice Chen</span><span class="preview-tag vip">VIP</span><span class="preview-checkin done">✓ Checked In</span>
+            </div>
+            <div class="preview-guest-row">
+              <div class="preview-av" style="background:linear-gradient(135deg,#38BDF8,#6366f1)">BS</div>
+              <span class="preview-gname">Bob Smith</span><span class="preview-tag staff">Staff</span><span class="preview-checkin done">✓ Checked In</span>
+            </div>
+            <div class="preview-guest-row">
+              <div class="preview-av" style="background:linear-gradient(135deg,#10D9A0,#059669)">CD</div>
+              <span class="preview-gname">Carol Davis</span><span class="preview-tag friend">Friend</span><span class="preview-checkin wait">Check In</span>
+            </div>
+            <div class="preview-guest-row">
+              <div class="preview-av" style="background:linear-gradient(135deg,#EC4899,#f43f5e)">JM</div>
+              <span class="preview-gname">James Miller</span><span class="preview-tag vip">VIP</span><span class="preview-checkin done">✓ Checked In</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="lsection ls-section" id="ls-features" data-ls="features">
+    <div class="section-eyebrow">Features</div>
+    <h2 class="section-heading">Everything your event needs</h2>
+    <p class="section-sub">Powerful tools for hosts who care about every detail.</p>
+    <div class="features-grid">
+      <div class="feat-card"><div class="feat-icon c-v">⚡</div><div class="feat-title">Real-time Sync</div><div class="feat-desc">Guest list updates instantly across all devices using Firebase live listeners.</div></div>
+      <div class="feat-card"><div class="feat-icon c-em">✓</div><div class="feat-title">Fast Check-In</div><div class="feat-desc">One tap to check in guests. Live counters update without any refresh.</div></div>
+      <div class="feat-card"><div class="feat-icon c-am">★</div><div class="feat-title">Guest Tags</div><div class="feat-desc">Categorize guests as VIP, Friend, or Staff for organized access control.</div></div>
+      <div class="feat-card"><div class="feat-icon c-b">▦</div><div class="feat-title">Analytics Dashboard</div><div class="feat-desc">Track check-in rates, top events, and attendance trends in real-time.</div></div>
+      <div class="feat-card"><div class="feat-icon c-r">⬡</div><div class="feat-title">Multi-Auth</div><div class="feat-desc">Sign in with Google, email/password, or phone number — your choice.</div></div>
+      <div class="feat-card"><div class="feat-icon c-t">◉</div><div class="feat-title">Multi-Event</div><div class="feat-desc">Manage multiple events simultaneously with per-event guest lists.</div></div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="lsection ls-section" id="ls-how" data-ls="how">
+    <div class="section-eyebrow">How it works</div>
+    <h2 class="section-heading">Up and running in minutes</h2>
+    <p class="section-sub">No setup headaches. Sign in and start managing your first event immediately.</p>
+    <div class="steps-row">
+      <div class="step"><div class="step-num">1</div><div class="step-title">Create your event</div><div class="step-desc">Add an event name and date. Your dashboard is ready in seconds.</div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-title">Add your guests</div><div class="step-desc">Enter names and assign tags — VIP, Friend, or Staff.</div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-title">Check them in</div><div class="step-desc">On the day, tap to check in guests and watch the live counter update.</div></div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="landing-cta ls-section" id="ls-cta" data-ls="cta">
+    <div class="cta-box">
+      <h2 class="cta-title">Ready to run your event?</h2>
+      <p class="cta-sub">Join event hosts who manage their events with confidence using Smart Guest List.</p>
+      <div class="cta-btns">
+        <button class="btn-hero" id="cta-signup-btn">Get Started Free</button>
+        <button class="btn-hero-outline" id="cta-login-btn">Sign in to existing account</button>
+      </div>
+    </div>
+  </section>
+
+  <footer class="landing-footer">
+    <div class="footer-brand">◈ Smart <em>Guest</em> List</div>
+    <div class="footer-copy">© 2026 Smart Guest List. Built for event hosts.</div>
+    <div class="footer-links"><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a></div>
+  </footer>
+
+</div>
+
+<!-- ═══════════════════════════════════
+     AUTH VIEW
+═══════════════════════════════════ -->
+<div id="auth-view" class="hidden">
+  <div class="auth-card">
+
+    <div class="auth-logo">
+      <div class="auth-logo-mark">◈</div>
+      <div class="auth-logo-name">Smart <em>Guest</em> List</div>
+    </div>
+
+    <div class="auth-tabs">
+      <button class="auth-tab active" id="tab-login">Sign In</button>
+      <button class="auth-tab" id="tab-register">Register</button>
+      <button class="auth-tab" id="tab-phone">Phone</button>
+    </div>
+
+    <!-- Google button (shown on login + register tabs) -->
+    <div id="google-section">
+      <button class="btn-google" id="google-btn">
+        <svg width="17" height="17" viewBox="0 0 18 18"><path fill="#4285F4" d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.874 2.684-6.615z"/><path fill="#34A853" d="M9 18c2.43 0 4.467-.806 5.956-2.184l-2.908-2.258c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332A8.997 8.997 0 0 0 9 18z"/><path fill="#FBBC05" d="M3.964 10.707A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.707V4.961H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.039l3.007-2.332z"/><path fill="#EA4335" d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0A8.997 8.997 0 0 0 .957 4.961L3.964 7.293C4.672 5.163 6.656 3.58 9 3.58z"/></svg>
+        Continue with Google
+      </button>
+      <div class="auth-divider"><div class="auth-divider-line"></div><span class="auth-divider-text">or continue with email</span><div class="auth-divider-line"></div></div>
+    </div>
+
+    <!-- Login form -->
+    <form id="login-form" class="auth-form" onsubmit="return false;">
+      <div class="field-group"><label class="field-label" for="login-email">Email</label><input class="field-input" id="login-email" type="email" placeholder="you@example.com" autocomplete="email"/></div>
+      <div class="field-group"><label class="field-label" for="login-password">Password</label><input class="field-input" id="login-password" type="password" placeholder="••••••••" autocomplete="current-password"/></div>
+      <div class="error-box" id="login-error"></div>
+      <button class="btn btn-primary btn-full" id="login-btn" data-label="Sign In">Sign In</button>
+    </form>
+
+    <!-- Register form -->
+    <form id="register-form" class="auth-form hidden" onsubmit="return false;">
+      <div class="field-group"><label class="field-label" for="register-email">Email</label><input class="field-input" id="register-email" type="email" placeholder="you@example.com" autocomplete="email"/></div>
+      <div class="field-group"><label class="field-label" for="register-password">Password</label><input class="field-input" id="register-password" type="password" placeholder="Min. 6 characters" autocomplete="new-password"/></div>
+      <div class="error-box" id="register-error"></div>
+      <button class="btn btn-primary btn-full" id="register-btn" data-label="Create Account">Create Account</button>
+    </form>
+
+    <!-- Phone auth -->
+    <div id="phone-form" class="auth-form hidden">
+      <!-- Step 1: phone number -->
+      <div id="phone-step-1" class="phone-step">
+        <div class="field-group">
+          <label class="field-label">Phone Number</label>
+          <div class="phone-prefix-row">
+            <select class="phone-prefix-select" id="phone-prefix">
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+49">🇩🇪 +49</option>
+              <option value="+33">🇫🇷 +33</option>
+              <option value="+34">🇪🇸 +34</option>
+              <option value="+39">🇮🇹 +39</option>
+              <option value="+7">🇷🇺 +7</option>
+              <option value="+380">🇺🇦 +380</option>
+              <option value="+48">🇵🇱 +48</option>
+              <option value="+81">🇯🇵 +81</option>
+              <option value="+86">🇨🇳 +86</option>
+              <option value="+91">🇮🇳 +91</option>
+              <option value="+55">🇧🇷 +55</option>
+              <option value="+61">🇦🇺 +61</option>
+            </select>
+            <input class="field-input" id="phone-number" type="tel" placeholder="123 456 7890" style="flex:1;"/>
+          </div>
+        </div>
+        <div class="error-box" id="phone-error-1"></div>
+        <div id="recaptcha-container"></div>
+        <button class="btn btn-primary btn-full" id="send-code-btn" data-label="Send Verification Code">Send Verification Code</button>
+      </div>
+      <!-- Step 2: OTP -->
+      <div id="phone-step-2" class="phone-step hidden">
+        <div class="field-group">
+          <label class="field-label">Verification Code</label>
+          <input class="field-input" id="otp-input" type="text" placeholder="6-digit code" maxlength="6" inputmode="numeric" autocomplete="one-time-code"/>
+        </div>
+        <div class="error-box" id="phone-error-2"></div>
+        <button class="btn btn-primary btn-full" id="verify-code-btn" data-label="Verify & Sign In">Verify & Sign In</button>
+        <button class="btn btn-secondary btn-full" id="resend-code-btn">← Change number</button>
+      </div>
+    </div>
+
+    <div class="auth-back">
+      <button class="auth-back-btn" id="back-to-landing">← Back to home</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════
+     APP VIEW
+═══════════════════════════════════ -->
+<div id="app-view" class="hidden">
+
+  <header class="app-header">
+    <div class="app-header-logo">
+      <div class="app-header-logo-mark">◈</div>
+      <div class="app-header-logo-name">Smart <em>Guest</em> List</div>
+    </div>
+    <div class="app-header-right">
+      <button class="notif-bell" id="notif-bell" title="Notifications">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+        <span class="notif-badge hidden" id="notif-badge">0</span>
+      </button>
+      <div class="user-chip">
+        <div class="user-chip-av" id="user-avatar">U</div>
+        <span class="user-chip-name" id="user-name"></span>
+      </div>
+      <button class="btn-signout" id="logout-btn">Sign Out</button>
+    </div>
+  </header>
+
+  <div class="app-shell">
+
+    <!-- Sidebar navigation -->
+    <nav class="app-nav">
+      <div class="app-nav-label">Navigation</div>
+      <button class="nav-item nav-item-home" data-panel="home">
+        <span class="nav-item-icon">⌂</span>Home
+      </button>
+      <div class="nav-group" id="nav-group-events">
+        <button class="nav-item nav-group-parent active" id="nav-events-parent" data-panel="events">
+          <span class="nav-item-icon">◈</span>
+          <span>Events</span>
+          <span class="nav-group-arrow">▾</span>
+        </button>
+        <div class="nav-sub-group open" id="nav-events-sub">
+          <button class="nav-sub-item active" data-subpanel="events-own" id="nav-sub-events-own">
+            <span class="nav-sub-dot"></span>Your Events
+          </button>
+          <button class="nav-sub-item" data-subpanel="events-activity" id="nav-sub-events-activity">
+            <span class="nav-sub-dot"></span>My Activity
+          </button>
+        </div>
+      </div>
+      <button class="nav-item" data-panel="explore">
+        <span class="nav-item-icon">⊕</span>Explore
+      </button>
+      <button class="nav-item" data-panel="friends">
+        <span class="nav-item-icon">◯</span>Friends
+      </button>
+      <button class="nav-item" data-panel="stats">
+        <span class="nav-item-icon">▦</span>Statistics
+      </button>
+      <button class="nav-item" data-panel="profile">
+        <span class="nav-item-icon">◉</span>Profile
+      </button>
+    </nav>
+
+    <div class="app-content">
+
+      <!-- ── EVENTS PANEL ── -->
+      <div id="panel-events" class="app-panel">
+        <div class="events-layout">
+
+          <aside class="events-sidebar">
+            <button class="btn-create-new-event" id="btn-create-new-event">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+              Create Event
+            </button>
+            <div class="event-search-wrap">
+              <input class="event-search-input" id="event-search-input" type="text" placeholder="Search events…" maxlength="60" autocomplete="off"/>
+            </div>
+            <div class="events-list" id="events-list">
+              <p class="events-empty">No events yet. Create one!</p>
+            </div>
+          </aside>
+
+          <section class="events-content">
+            <!-- No event selected -->
+            <div class="no-event-state" id="no-event-placeholder">
+              <div class="no-event-icon">◈</div>
+              <div class="no-event-title">No event selected</div>
+              <div class="no-event-sub">Select an event from the sidebar, or create a new one.</div>
+              <button class="btn-no-event-create" id="btn-no-event-create">
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
+                Create your first event
+              </button>
+            </div>
+
+            <!-- Event header stats -->
+            <div class="event-stat-card hidden" id="event-stat-card">
+              <div class="event-stat-info">
+                <div class="event-stat-live"><span class="live-dot"></span>Live</div>
+                <div class="event-stat-name" id="event-header-name">Event Name</div>
+                <div class="event-stat-date" id="event-header-date"></div>
+                <div class="event-meta-row" id="event-meta-row"></div>
+              </div>
+              <div class="stat-pills">
+                <div class="stat-pill">
+                  <div class="stat-pill-val" id="stat-total">0</div>
+                  <div class="stat-pill-lbl">Total Guests</div>
+                </div>
+                <div class="stat-pill em">
+                  <div class="stat-pill-val" id="stat-checked">0</div>
+                  <div class="stat-pill-lbl">Checked In</div>
+                </div>
+              </div>
+              <div class="event-actions" id="event-actions">
+                <button class="btn-event-action btn-open-chat" id="btn-open-chat" title="Event Chat">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+                  Chat
+                </button>
+                <button class="btn-event-action btn-invite-friends" id="btn-invite-friends" title="Invite Friends">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><line x1="19" y1="8" x2="19" y2="14"/><line x1="22" y1="11" x2="16" y2="11"/></svg>
+                  Invite
+                </button>
+                <button class="btn-event-action btn-invite-link" id="btn-invite-link" title="Copy Invite Link">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+                  Copy Link
+                </button>
+                <button class="btn-event-action btn-edit-event" id="btn-edit-event" title="Edit Event">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  Edit
+                </button>
+                <button class="btn-event-action btn-delete-event" id="btn-delete-event" title="Delete Event">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6"/><path d="M14 11v6"/><path d="M9 6V4h6v2"/></svg>
+                  Delete
+                </button>
+              </div>
+            </div>
+
+            <!-- Add guest bar -->
+            <div class="add-guest-bar hidden" id="add-guest-bar">
+              <div class="user-search-wrap">
+                <input class="guest-name-input user-search-input" id="guest-name-input" type="text" placeholder="Search user by name or phone…" maxlength="80" autocomplete="off"/>
+                <div class="user-search-dropdown hidden" id="user-search-dropdown"></div>
+              </div>
+              <select class="tag-select" id="guest-tag-select">
+                <option value="Friend">Friend</option>
+                <option value="VIP">VIP</option>
+                <option value="Staff">Staff</option>
+              </select>
+              <button class="btn-add-guest" id="add-guest-btn" data-label="+ Add Guest">+ Add Guest</button>
+            </div>
+
+            <!-- Guest list -->
+            <div class="guest-list-card hidden" id="guest-list-card">
+              <div class="guest-list-top">
+                <div class="guest-list-heading">Guest List</div>
+                <div class="filter-pills">
+                  <button class="filter-pill active" data-filter="all">All</button>
+                  <button class="filter-pill" data-filter="pending">Pending</button>
+                  <button class="filter-pill" data-filter="checked">Checked In</button>
+                </div>
+              </div>
+              <div id="guest-list">
+                <div class="guest-list-empty">No guests yet.</div>
+              </div>
+            </div>
+
+            <!-- Join requests panel (visible for public events) -->
+            <div class="join-requests-panel hidden" id="join-requests-panel">
+              <div class="join-requests-heading">
+                Pending Requests
+                <span class="join-requests-badge hidden" id="join-requests-badge">0</span>
+              </div>
+              <div id="join-requests-list">
+                <div class="join-requests-empty">No pending requests.</div>
+              </div>
+            </div>
+          </section>
+
+        </div>
+      </div>
+
+      <!-- ── MY ACTIVITY PANEL ── -->
+      <div id="panel-activity" class="app-panel hidden">
+        <div class="activity-layout">
+          <div class="activity-header">
+            <div class="activity-title">My Activity</div>
+            <div class="activity-subtitle">Track your event requests and upcoming events</div>
+          </div>
+          <div class="activity-tabs">
+            <button class="activity-tab active" data-tab="joined">Joined Events</button>
+            <button class="activity-tab" data-tab="calendar">Calendar</button>
+          </div>
+          <div class="activity-section" id="activity-section-joined">
+            <div id="activity-joined-list"><div class="activity-loading"><span class="spinner"></span></div></div>
+          </div>
+          <div class="activity-section hidden" id="activity-section-calendar">
+            <div class="activity-calendar-wrap">
+              <div class="cal-wrap">
+                <div class="cal-header">
+                  <button class="cal-nav-btn" id="cal-prev">&#8249;</button>
+                  <div style="display:flex;align-items:center;gap:8px">
+                    <div class="cal-month-label" id="cal-month-label"></div>
+                    <button class="cal-nav-btn cal-today-btn" id="cal-today">Today</button>
+                  </div>
+                  <button class="cal-nav-btn" id="cal-next">&#8250;</button>
+                </div>
+                <div class="cal-weekdays">
+                  <div>Su</div><div>Mo</div><div>Tu</div><div>We</div><div>Th</div><div>Fr</div><div>Sa</div>
+                </div>
+                <div class="cal-grid" id="cal-grid"></div>
+              </div>
+              <div class="cal-events-panel" id="cal-events-panel">
+                <div class="cal-events-empty">Select a day to see events</div>
+              </div>
+            </div>
+            <div class="cal-upcoming-wrap">
+              <div class="cal-upcoming-header">
+                <div class="cal-upcoming-title">Upcoming Events</div>
+                <div class="cal-upcoming-subtitle">Events you are attending</div>
+              </div>
+              <div id="cal-upcoming-list"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── STATISTICS PANEL ── -->
+      <div id="panel-stats" class="app-panel hidden">
+        <div class="stats-panel">
+          <div>
+            <div class="panel-heading">Analytics</div>
+            <div class="panel-sub">Aggregated stats across all your events, updated in real-time.</div>
+          </div>
+
+          <div class="stats-grid">
+            <div class="stat-card c-v"><span class="stat-card-icon">◈</span><span class="stat-card-val" id="sc-events">—</span><div class="stat-card-label">Total Events</div></div>
+            <div class="stat-card c-em"><span class="stat-card-icon">◉</span><span class="stat-card-val" id="sc-guests">—</span><div class="stat-card-label">Total Guests</div></div>
+            <div class="stat-card c-am"><span class="stat-card-icon">✓</span><span class="stat-card-val" id="sc-checkins">—</span><div class="stat-card-label">Checked In</div></div>
+            <div class="stat-card c-b"><span class="stat-card-icon">%</span><span class="stat-card-val" id="sc-rate">—</span><div class="stat-card-label">Check-in Rate</div><div class="stat-card-sub" id="sc-avg"></div></div>
+          </div>
+
+          <div class="stats-row-2">
+            <div class="top-event-card" id="top-event-card">
+              <div class="top-event-label">Top Event</div>
+              <div id="top-event-content"><div class="stats-empty" style="padding:24px 0">No events yet.</div></div>
+            </div>
+            <div class="events-breakdown">
+              <div class="breakdown-label">Events Breakdown</div>
+              <div class="breakdown-list" id="breakdown-list">
+                <div class="stats-empty" style="padding:12px 0;font-size:12px;">Create events to see the breakdown.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── PROFILE PANEL ── -->
+      <div id="panel-profile" class="app-panel hidden">
+        <div class="profile-panel">
+          <div>
+            <div class="panel-heading">Profile</div>
+            <div class="panel-sub">Manage your account and connected sign-in methods.</div>
+          </div>
+
+          <!-- Profile hero -->
+          <div class="profile-hero-card">
+            <div class="profile-avatar-wrap">
+              <div class="profile-avatar" id="profile-avatar-el">U</div>
+              <label class="avatar-upload-btn" for="avatar-file-input" title="Change photo">✎</label>
+              <input type="file" id="avatar-file-input" class="avatar-upload-input" accept="image/*"/>
+            </div>
+            <div class="profile-info">
+              <div class="profile-name-row">
+                <div class="profile-name" id="profile-name-display">—</div>
+                <button class="btn-edit-name" id="edit-name-btn">Edit</button>
+              </div>
+              <div class="profile-name-edit" id="profile-name-edit">
+                <input class="profile-name-input" id="profile-name-input" type="text" placeholder="Your name"/>
+                <button class="btn btn-primary" id="save-name-btn" data-label="Save" style="padding:8px 14px;font-size:12px;">Save</button>
+                <button class="btn btn-secondary" id="cancel-name-btn" style="padding:8px 14px;font-size:12px;">Cancel</button>
+              </div>
+              <div class="profile-email" id="profile-email-display">—</div>
+              <div class="profile-uid" id="profile-uid-display"></div>
+            </div>
+          </div>
+
+          <!-- Connected accounts -->
+          <div class="providers-card">
+            <div class="providers-heading">Connected Accounts</div>
+            <div id="providers-list"></div>
+
+            <!-- Link phone inline form -->
+            <div class="link-phone-form hidden" id="link-phone-form">
+              <div id="link-phone-step-1">
+                <div class="field-group" style="margin-bottom:10px;">
+                  <label class="field-label">Phone Number</label>
+                  <div class="phone-prefix-row">
+                    <select class="phone-prefix-select" id="link-phone-prefix">
+                      <option value="+1">🇺🇸 +1</option>
+                      <option value="+44">🇬🇧 +44</option>
+                      <option value="+49">🇩🇪 +49</option>
+                      <option value="+380">🇺🇦 +380</option>
+                      <option value="+7">🇷🇺 +7</option>
+                      <option value="+48">🇵🇱 +48</option>
+                    </select>
+                    <input class="field-input" id="link-phone-input" type="tel" placeholder="123 456 7890" style="flex:1;"/>
+                  </div>
+                </div>
+                <div id="recaptcha-link-container"></div>
+                <div style="display:flex;gap:8px;">
+                  <button class="btn btn-primary" id="link-send-code-btn" data-label="Send Code" style="flex:1;">Send Code</button>
+                  <button class="btn btn-secondary" id="link-phone-cancel-btn">Cancel</button>
+                </div>
+              </div>
+              <div id="link-phone-step-2" class="hidden">
+                <div class="field-group" style="margin-bottom:10px;">
+                  <label class="field-label">Verification Code</label>
+                  <input class="field-input" id="link-otp-input" type="text" placeholder="6-digit code" maxlength="6" inputmode="numeric"/>
+                </div>
+                <div style="display:flex;gap:8px;">
+                  <button class="btn btn-primary" id="link-verify-btn" data-label="Link Phone" style="flex:1;">Link Phone</button>
+                  <button class="btn btn-secondary" id="link-phone-back-btn">← Back</button>
+                </div>
+              </div>
+              <div class="error-box" id="link-phone-error"></div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- ── EXPLORE PANEL ── -->
+      <div id="panel-explore" class="app-panel hidden">
+        <div class="explore-panel">
+          <div class="explore-panel-head">
+            <div>
+              <div class="panel-heading">Explore Events</div>
+              <div class="panel-sub">Discover public events from the community.</div>
+            </div>
+          </div>
+          <div class="explore-search-bar">
+            <div class="explore-search-inner">
+              <span class="explore-search-icon">⌕</span>
+              <input class="field-input explore-input" id="explore-search-input" type="text" placeholder="Search public events by name…" maxlength="80" autocomplete="off"/>
+            </div>
+            <button class="btn btn-primary" id="explore-search-btn" style="flex-shrink:0;">Search</button>
+          </div>
+          <div id="explore-results" class="explore-results">
+            <div class="explore-loading" id="explore-loading">Loading recent events…</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- ── FRIENDS + CHAT PANEL ── -->
+      <div id="panel-friends" class="app-panel hidden">
+        <div class="friends-shell">
+          <aside class="friends-sidebar">
+            <div class="sidebar-section-label">Find People</div>
+            <div class="friends-search-wrap">
+              <input class="field-input" id="friends-search-input" type="text" placeholder="Search by name or phone…" autocomplete="off"/>
+            </div>
+            <div id="friends-search-results" class="friends-search-results hidden"></div>
+
+            <div class="friends-section-head">Requests
+              <span class="friends-badge hidden" id="friend-req-badge">0</span>
+            </div>
+            <div id="friend-requests-list" class="friend-items-list">
+              <div class="friends-empty">No pending requests.</div>
+            </div>
+
+            <div class="friends-section-head">My Friends</div>
+            <div id="friends-list" class="friend-items-list">
+              <div class="friends-empty">No friends yet.</div>
+            </div>
+          </aside>
+
+          <div class="chat-area">
+            <div class="chat-bg" aria-hidden="true">
+              <div class="chat-orb orb-1"></div>
+              <div class="chat-orb orb-2"></div>
+              <div class="chat-orb orb-3"></div>
+            </div>
+            <div class="chat-no-selection" id="chat-no-selection">
+              <div class="chat-no-icon">◯</div>
+              <div class="chat-no-text">Select a friend to start chatting</div>
+            </div>
+            <div class="chat-window hidden" id="chat-window">
+              <div class="chat-header">
+                <button class="chat-back-btn" id="chat-back-btn" aria-label="Back to friends">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+                  Back
+                </button>
+                <div class="chat-header-av" id="chat-header-av">?</div>
+                <div class="chat-header-info">
+                  <div class="chat-header-name" id="chat-header-name">Friend</div>
+                  <div class="chat-header-status" id="chat-header-status"></div>
+                </div>
+              </div>
+              <div class="chat-messages" id="chat-messages"></div>
+              <div class="reply-preview hidden" id="reply-preview" aria-live="polite">
+                <div class="reply-line"></div>
+                <div class="reply-content">
+                  <div class="reply-sender" id="reply-sender-name"></div>
+                  <div class="reply-text-preview" id="reply-text-preview"></div>
+                </div>
+                <button class="reply-close-btn" id="reply-close-btn" aria-label="Cancel reply">×</button>
+              </div>
+              <div class="chat-input-bar">
+                <input class="chat-input" id="chat-input" type="text" placeholder="Type a message…" maxlength="500" autocomplete="off"/>
+                <button class="btn-send-msg" id="send-msg-btn">↑</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══════════════════════════════════════
+       MOBILE BOTTOM NAVIGATION (hidden on desktop)
+       Lives INSIDE #app-view so it shares its stacking
+       context — .chat-area (z-500) correctly covers it.
+  ═══════════════════════════════════════ -->
+  <nav class="mobile-bottom-nav" id="mobile-bottom-nav">
+    <span class="mbn-indicator" id="mbn-indicator"></span>
+    <button class="mbn-item active" data-panel="events">
+      <span class="mbn-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
+      </span>
+      <span class="mbn-label">Events</span>
+    </button>
+    <button class="mbn-item" data-panel="explore">
+      <span class="mbn-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+      </span>
+      <span class="mbn-label">Explore</span>
+    </button>
+    <button class="mbn-item" data-panel="activity">
+      <span class="mbn-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>
+      </span>
+      <span class="mbn-label">Activity</span>
+    </button>
+    <button class="mbn-item" data-panel="friends">
+      <span class="mbn-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+      </span>
+      <span class="mbn-label">Friends</span>
+    </button>
+    <button class="mbn-item" data-panel="profile">
+      <span class="mbn-icon">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+      </span>
+      <span class="mbn-label">Profile</span>
+    </button>
+  </nav>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MODAL: EVENT DETAILS (universal)
+═══════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="modal-event-details" role="dialog" aria-modal="true">
+  <div class="modal-card edc-card" id="edc-card">
+    <button class="edc-close" id="edc-close" aria-label="Close">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg>
+    </button>
+
+    <!-- Loading overlay -->
+    <div class="edc-loading hidden" id="edc-loading">
+      <span class="spinner"></span>
+    </div>
+
+    <!-- Header gradient strip -->
+    <div class="edc-header-strip" id="edc-header-strip">
+      <!-- Cover image layer — shown when event has photoURL -->
+      <div class="edc-cover-bg hidden" id="edc-cover-bg" aria-hidden="true"></div>
+      <div class="edc-header-content">
+        <div class="edc-badges" id="edc-badges"></div>
+        <div class="edc-title"  id="edc-title">Event</div>
+        <div class="edc-date"   id="edc-date"></div>
+        <div class="edc-host"   id="edc-host"></div>
+      </div>
+    </div>
+
+    <!-- Tab bar -->
+    <div class="edc-tabs" id="edc-tabs">
+      <button class="edc-tab active" data-tab="overview">Overview</button>
+      <button class="edc-tab" data-tab="chat">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
+        Chat
+      </button>
+    </div>
+
+    <!-- Panels wrapper — enables CSS transition stacking -->
+    <div class="edc-panels-wrap" id="edc-panels-wrap">
+
+    <!-- Overview panel -->
+    <div class="edc-tab-panel active" id="edc-panel-overview">
+      <!-- Live stats bar — updates in real-time from guests collection -->
+      <div class="ed-stats-bar" id="ed-stats-bar"></div>
+      <div class="edc-body">
+        <div class="edc-desc hidden" id="edc-desc"></div>
+        <div class="edc-meta" id="edc-meta"></div>
+        <div class="edc-guests-section hidden" id="edc-guests-section">
+          <div class="edc-section-label">Guests</div>
+          <div class="edc-guest-avatars" id="edc-guest-avatars"></div>
+        </div>
+        <div class="edc-actions" id="edc-actions"></div>
+        <!-- Announcement bar — host only, toggled via JS -->
+        <div class="ed-announce-bar hidden" id="ed-announce-bar">
+          <div class="ed-announce-label">📢 Broadcast to all guests</div>
+          <div class="ed-announce-row">
+            <input class="ed-announce-input" id="ed-announce-input" type="text"
+                   placeholder="Send announcement to all guests…" maxlength="300" autocomplete="off" />
+            <button class="ed-announce-send" id="ed-announce-send">Send to all</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Chat panel -->
+    <div class="edc-tab-panel" id="edc-panel-chat">
+      <div class="chat-bg" aria-hidden="true">
+        <div class="chat-orb orb-1"></div>
+        <div class="chat-orb orb-2"></div>
+        <div class="chat-orb orb-3"></div>
+      </div>
+      <div class="evc-chat-header" id="evc-chat-header">
+        <div class="evc-chat-header-info">
+          <div class="evc-chat-header-title" id="evc-chat-header-title">Group Chat</div>
+          <div class="evc-chat-header-meta"  id="evc-chat-header-meta"></div>
+        </div>
+        <div class="evc-avatars-stack" id="evc-avatars-stack"></div>
+      </div>
+      <div class="evc-messages" id="evc-messages">
+        <div class="evc-empty" id="evc-empty"></div>
+      </div>
+      <button class="evc-new-msgs-btn hidden" id="evc-new-msgs-btn">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="6 9 12 15 18 9"/></svg>
+        New messages
+      </button>
+      <!-- Typing indicator -->
+      <div class="evc-typing-bar hidden" id="evc-typing-bar">
+        <div class="evc-typing-dots"><span></span><span></span><span></span></div>
+        <span class="evc-typing-text" id="evc-typing-text"></span>
+      </div>
+      <div class="evc-input-bar">
+        <input class="evc-input" id="evc-input" type="text" placeholder="Message everyone…" maxlength="500" autocomplete="off"/>
+        <button class="evc-send" id="evc-send" disabled>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+    </div>
+    </div><!-- /edc-panels-wrap -->
+  </div>
+</div>
+
+<!-- Reaction picker (global overlay, repositioned by JS) -->
+<div class="evc-reaction-picker hidden" id="evc-reaction-picker" role="menu" aria-label="Pick reaction">
+  <button class="evc-rp-btn" data-emoji="👍" title="Like">👍</button>
+  <button class="evc-rp-btn" data-emoji="❤️" title="Love">❤️</button>
+  <button class="evc-rp-btn" data-emoji="😂" title="Haha">😂</button>
+  <button class="evc-rp-btn" data-emoji="🔥" title="Fire">🔥</button>
+  <button class="evc-rp-btn" data-emoji="😮" title="Wow">😮</button>
+  <button class="evc-rp-btn" data-emoji="😢" title="Sad">😢</button>
+  <button class="evc-rp-btn" data-emoji="🎉" title="Party">🎉</button>
+  <button class="evc-rp-btn" data-emoji="👀" title="Eyes">👀</button>
+</div>
+
+<!-- Toast stack -->
+<div class="toast-stack" id="toast-stack"></div>
+
+<!-- ═══════════════════════════════════════
+     MODAL: CONFIRM DELETE EVENT
+═══════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="modal-delete-event">
+  <div class="modal-card">
+    <div class="modal-icon modal-icon-danger">⚠</div>
+    <div class="modal-title">Delete Event?</div>
+    <div class="modal-body" id="modal-delete-event-body">This will permanently remove the event, all guests, and pending requests.</div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" id="modal-delete-cancel">Cancel</button>
+      <button class="btn btn-danger" id="modal-delete-confirm">Delete Event</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MODAL: EDIT EVENT
+═══════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="modal-edit-event">
+  <div class="modal-card modal-card-wide">
+    <div class="modal-title">Edit Event</div>
+    <div class="modal-form">
+      <div class="field-group">
+        <label class="field-label">Event Name</label>
+        <input class="field-input" id="edit-event-name" type="text" placeholder="Event name" maxlength="60"/>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Date &amp; Time</label>
+        <input class="field-input flatpickr-input" id="edit-event-date" type="text" placeholder="Date &amp; time" readonly="readonly"/>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Location <span class="field-optional">(optional)</span></label>
+        <input class="field-input" id="edit-event-location" type="text" placeholder="Venue or address" maxlength="120"/>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Max Guests <span class="field-optional">(optional)</span></label>
+        <input class="field-input" id="edit-event-max" type="number" placeholder="Leave blank for unlimited" min="1" max="9999"/>
+      </div>
+      <div class="field-group">
+        <label class="field-label">Description</label>
+        <textarea class="field-input field-textarea" id="edit-event-desc" placeholder="Event description…" maxlength="500" rows="3"></textarea>
+      </div>
+
+      <div class="field-group">
+        <label class="field-label">Cover Image <span class="field-optional">(optional)</span></label>
+        <div class="img-upload-wrap" id="img-upload-wrap">
+          <img id="edit-event-photo-preview" class="img-upload-preview hidden" alt="Cover preview"/>
+          <label class="img-upload-btn" for="edit-event-photo">
+            <svg class="img-upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" width="20" height="20"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+            <span id="img-upload-text">Choose cover image</span>
+          </label>
+          <input type="file" accept="image/*" id="edit-event-photo" class="img-upload-input"/>
+        </div>
+        <div class="field-hint">Supports JPG, PNG, WebP · Max 5 MB</div>
+      </div>
+      <div class="privacy-row">
+        <span class="privacy-row-label">Make event public</span>
+        <label class="privacy-toggle-switch">
+          <input type="checkbox" id="edit-event-public"/>
+          <span class="privacy-slider"></span>
+          <span id="edit-privacy-label">Private</span>
+        </label>
+      </div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" id="modal-edit-cancel">Cancel</button>
+      <button class="btn btn-primary" id="modal-edit-save" data-label="Save Changes">Save Changes</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     MODAL: INVITE FRIENDS
+═══════════════════════════════════════ -->
+<div class="modal-overlay hidden" id="modal-invite-friends">
+  <div class="modal-card modal-card-wide">
+    <div class="modal-title">Invite Friends</div>
+    <div class="modal-body">Select friends to invite to this event via chat.</div>
+    <div class="invite-friends-search">
+      <input class="field-input" id="invite-friend-search" type="text" placeholder="Filter friends…" maxlength="60" autocomplete="off"/>
+    </div>
+    <div class="invite-friends-list" id="invite-friends-list">
+      <div class="friends-empty">No friends yet. Add friends first.</div>
+    </div>
+    <div class="modal-actions">
+      <button class="btn btn-secondary" id="modal-invite-cancel">Cancel</button>
+      <button class="btn btn-primary" id="modal-invite-send" data-label="Send Invites">Send Invites</button>
+    </div>
+  </div>
+</div>
+
+<!-- ═══════════════════════════════════════
+     NOTIFICATION PANEL (dropdown)
+═══════════════════════════════════════ -->
+<div class="notif-panel hidden" id="notif-panel">
+  <div class="notif-panel-header">
+    <span class="notif-panel-title">Notifications</span>
+    <button class="notif-mark-read" id="notif-mark-read">Mark all read</button>
+  </div>
+  <div class="notif-list" id="notif-list">
+    <div class="notif-empty">No notifications</div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+<script type="module" src="js/app.js"></script>
+</body>
+</html>
